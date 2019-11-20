@@ -15,3 +15,11 @@ Minimalement votre application devra avoir :
 1. 4 Interfaces CRUD (dont au moins une avec une relation 1-* ou \*-*)
 2. Une interface de recherche (simple et avancée)
 
+
+
+
+
+# INFO
+
+Pour l'authentification : Dans Tools->NuGet Package Manager->Package Manager Console lancer la commande "Update-Database -Context ApplicationDbContext"
+

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GestionParcMachinerieTP3.Models.Db
+namespace GestionParcMachinerieTP3.Models
 {
     public partial class Machine
     {

@@ -10,14 +10,13 @@ namespace GestionParcMachinerieTP3.DAL
         {
         }
 
-        public virtual DbSet<Bill> Bill { get; set; }
-        public virtual DbSet<Client> Client { get; set; }
-        public virtual DbSet<Command> Command { get; set; }
-        public virtual DbSet<Machine> Machine { get; set; }
+        public virtual DbSet<Bill> Bills { get; set; }
+        public virtual DbSet<Command> Commands { get; set; }
+        public virtual DbSet<Machine> Machines { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

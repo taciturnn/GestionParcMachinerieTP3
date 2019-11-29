@@ -18,7 +18,7 @@ namespace GestionParcMachinerieTP3.Controllers
         // GET: Machines
         public ActionResult Index()
         {
-            return View(db.Machine.ToList());
+            return View(db.Machines.ToList());
         }
 
         // GET: Machines/Details/5
@@ -28,7 +28,7 @@ namespace GestionParcMachinerieTP3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Machine machine = db.Machine.Find(id);
+            Machine machine = db.Machines.Find(id);
             if (machine == null)
             {
                 return HttpNotFound();
@@ -51,7 +51,7 @@ namespace GestionParcMachinerieTP3.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Machine.Add(machine);
+                db.Machines.Add(machine);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace GestionParcMachinerieTP3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Machine machine = db.Machine.Find(id);
+            Machine machine = db.Machines.Find(id);
             if (machine == null)
             {
                 return HttpNotFound();
@@ -97,7 +97,7 @@ namespace GestionParcMachinerieTP3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Machine machine = db.Machine.Find(id);
+            Machine machine = db.Machines.Find(id);
             if (machine == null)
             {
                 return HttpNotFound();
@@ -110,8 +110,8 @@ namespace GestionParcMachinerieTP3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Machine machine = db.Machine.Find(id);
-            db.Machine.Remove(machine);
+            Machine machine = db.Machines.Find(id);
+            db.Machines.Remove(machine);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -6,8 +6,21 @@
 
 <h1>Index</h1>
 
+<form asp-controller="Machines" asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <input type="text" name="filter" class="form-control" placeholder="Model">
+        </div>
+        <div class="col-12 col-md-6">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<br/><hr/><br/>
+
 <p>
-    <a asp-action="Create">Create New</a>
+    <a type="button" class="btn btn-success" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -31,9 +44,9 @@
                 @Html.DisplayFor(modelItem => item.RentPrice)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

@@ -19,9 +19,14 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // GET: Machines
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter)
         {
-            return View(await context.Machine.ToListAsync());
+            IQueryable<Machine> query = context.Machine;
+            if (!String.IsNullOrEmpty(filter))
+            {
+                query = query.Where(s => s.Model.Contains(filter));
+            }
+            return View(await query.ToListAsync());
         }
 
         // GET: Machines/Details/5

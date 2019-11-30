@@ -16,6 +16,10 @@ namespace GestionParcMachinerieTP3.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string CompanyName { get; set; }
     }
 
     public class ApplicationRole : IdentityRole
@@ -36,5 +40,6 @@ namespace GestionParcMachinerieTP3.Models
             return new ApplicationDbContext();
         }
 
+        public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.AccountViewModel> AccountViewModels { get; set; }
     }
 }

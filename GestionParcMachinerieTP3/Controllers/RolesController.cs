@@ -77,13 +77,14 @@ namespace GestionParcMachinerieTP3.Controllers
             var role = await RoleManager.FindByIdAsync(id);
             return View(new RoleViewModel(role));
         }
-
+        
         public async Task<ActionResult> Delete(string id)
         {
             var role = await RoleManager.FindByIdAsync(id);
             return View(new RoleViewModel(role));
         }
 
+        [HttpPost, ActionName("Delete")]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
             var role = await RoleManager.FindByIdAsync(id);

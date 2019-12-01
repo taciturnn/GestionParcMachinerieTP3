@@ -70,7 +70,19 @@ namespace GestionParcMachinerieTP3.Models
             this.Email = user.Email;
             this.FirstName = user.FirstName;
             this.LastName = user.LastName;
+            this.CompanyName = user.CompanyName;
             this.Email = user.Email;
+        }
+
+        public AccountViewModel(ApplicationUser user, string role)
+        {
+            this.Id = user.Id;
+            this.Email = user.Email;
+            this.FirstName = user.FirstName;
+            this.LastName = user.LastName;
+            this.CompanyName = user.CompanyName;
+            this.Email = user.Email;
+            this.RoleName = role;
         }
 
         [Key]

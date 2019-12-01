@@ -74,9 +74,72 @@ namespace GestionParcMachinerieTP3.Controllers
             List<AccountViewModel> list = new List<AccountViewModel>();
             foreach (var user in UserManager.Users)
             {
-                list.Add(new AccountViewModel(user));
+                list.Add(new AccountViewModel(user, UserManager.GetRoles(user.Id).First()));
             }
             return View(list);
+        }
+
+        //
+        // GET: /Account/Edit
+        public async Task<ActionResult> Edit(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            
+            List<SelectListItem> roleList = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+            {
+                foreach (var userRole in user.Roles)
+                {
+                    if (RoleManager.FindById(userRole.RoleId).Name == role.Name)
+                        ViewBag.SelectedRole = role.Name;
+                }
+
+                roleList.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+            }
+            ViewBag.Roles = roleList;
+            return View(new AccountViewModel(user));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(AccountViewModel model)
+        {
+
+            ApplicationUser user = UserManager.FindById(model.Id);
+            user.Email = model.Email;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.CompanyName = model.CompanyName;
+            
+            await UserManager.UpdateAsync(user);
+
+            foreach (var role in UserManager.GetRoles(user.Id))
+            {
+                await UserManager.RemoveFromRolesAsync(user.Id, role);
+            }
+
+            await UserManager.AddToRolesAsync(user.Id, model.RoleName);
+            
+            return RedirectToAction("Index");
+        }
+
+        public async Task<ActionResult> Details(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            return View(new AccountViewModel(user, UserManager.GetRoles(user.Id).First()));
+        }
+
+        public async Task<ActionResult> Delete(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            return View(new AccountViewModel(user));
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            await UserManager.DeleteAsync(user);
+            return RedirectToAction("Index");
         }
 
         //

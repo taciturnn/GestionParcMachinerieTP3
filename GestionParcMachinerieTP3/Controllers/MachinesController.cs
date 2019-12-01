@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using GestionParcMachinerieTP3.DAL;
+using GestionParcMachinerieTP3.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,17 +18,17 @@ namespace GestionParcMachinerieTP3.Controllers
 {
     public class MachinesController : Controller
     {
-        private readonly Context context;
+        private readonly MachinerieContext db;
 
-        public MachinesController(Context context)
+        public MachinesController(MachinerieContext db)
         {
-            this.context = context;
+            this.db = db;
         }
 
         // GET: Machines
         public async Task<IActionResult> Index(string filter)
         {
-            IQueryable<Machine> query = context.Machine;
+            IQueryable<Machine> query = db.Machine;
             if (!String.IsNullOrEmpty(filter))
             {
                 query = query.Where(s => s.Model.Contains(filter));
@@ -30,128 +37,107 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // GET: Machines/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            var machine = await context.Machine
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Machine machine = db.Machines.Find(id);
             if (machine == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
             return View(machine);
         }
 
         // GET: Machines/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
             return View();
         }
 
         // POST: Machines/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Model,RentPrice")] Machine machine)
+        public ActionResult Create([Bind(Include = "Id,Model,RentPrice")] Machine machine)
         {
             if (ModelState.IsValid)
             {
-                context.Add(machine);
-                await context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                db.Machines.Add(machine);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
+
             return View(machine);
         }
 
         // GET: Machines/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            var machine = await context.Machine.FindAsync(id);
+            Machine machine = db.Machines.Find(id);
             if (machine == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
             return View(machine);
         }
 
         // POST: Machines/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Model,RentPrice")] Machine machine)
+        public ActionResult Edit([Bind(Include = "Id,Model,RentPrice")] Machine machine)
         {
-            if (id != machine.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    context.Update(machine);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MachineExists(machine.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                db.Entry(machine).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(machine);
         }
 
         // GET: Machines/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            var machine = await context.Machine
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Machine machine = db.Machines.Find(id);
             if (machine == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
             return View(machine);
         }
 
         // POST: Machines/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            var machine = await context.Machine.FindAsync(id);
-            context.Machine.Remove(machine);
-            await context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            Machine machine = db.Machines.Find(id);
+            db.Machines.Remove(machine);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        private bool MachineExists(int id)
+        protected override void Dispose(bool disposing)
         {
-            return context.Machine.Any(e => e.Id == id);
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

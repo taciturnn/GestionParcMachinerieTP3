@@ -8,17 +8,32 @@ using System.Web;
 using System.Web.Mvc;
 using GestionParcMachinerieTP3.DAL;
 using GestionParcMachinerieTP3.Models;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using GestionParcMachinerieTP3.Models.Db;
 
 namespace GestionParcMachinerieTP3.Controllers
 {
     public class MachinesController : Controller
     {
-        private MachinerieContext db = new MachinerieContext();
+        private readonly MachinerieContext db;
+
+        public MachinesController(MachinerieContext db)
+        {
+            this.db = db;
+        }
 
         // GET: Machines
-        public ActionResult Index()
+        public async Task<IActionResult> Index(string filter)
         {
-            return View(db.Machines.ToList());
+            IQueryable<Machine> query = db.Machine;
+            if (!String.IsNullOrEmpty(filter))
+            {
+                query = query.Where(s => s.Model.Contains(filter));
+            }
+            return View(await query.ToListAsync());
         }
 
         // GET: Machines/Details/5

@@ -9,10 +9,6 @@ using System.Web.Mvc;
 using GestionParcMachinerieTP3.DAL;
 using GestionParcMachinerieTP3.Models;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using GestionParcMachinerieTP3.Models.Db;
 
 namespace GestionParcMachinerieTP3.Controllers
 {
@@ -20,20 +16,25 @@ namespace GestionParcMachinerieTP3.Controllers
     {
         private readonly MachinerieContext db;
 
+        public MachinesController()
+        {
+            this.db = new MachinerieContext();
+        }
+
         public MachinesController(MachinerieContext db)
         {
             this.db = db;
         }
 
         // GET: Machines
-        public async Task<IActionResult> Index(string filter)
+        public ActionResult Index(string filter)
         {
-            IQueryable<Machine> query = db.Machine;
+            IQueryable<Machine> query = db.Machines;
             if (!String.IsNullOrEmpty(filter))
             {
                 query = query.Where(s => s.Model.Contains(filter));
             }
-            return View(await query.ToListAsync());
+            return View(query.ToList());
         }
 
         // GET: Machines/Details/5
@@ -133,7 +134,7 @@ namespace GestionParcMachinerieTP3.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && db != null)
             {
                 db.Dispose();
             }

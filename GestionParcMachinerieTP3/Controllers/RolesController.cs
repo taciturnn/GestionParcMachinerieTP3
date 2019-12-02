@@ -15,6 +15,7 @@ namespace GestionParcMachinerieTP3.Controllers
 
         public RolesController()
         {
+            int test = 1;
         }
 
         public RolesController(ApplicationRoleManager roleManager)

@@ -14,7 +14,7 @@ namespace GestionParcMachinerieTP3.Controllers
 {
     public class MachinesController : Controller
     {
-        private readonly MachinerieContext db;
+        private MachinerieContext db = new MachinerieContext();
 
         public MachinesController()
         {
@@ -27,14 +27,9 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // GET: Machines
-        public ActionResult Index(string filter)
+        public ActionResult Index()
         {
-            IQueryable<Machine> query = db.Machines;
-            if (!String.IsNullOrEmpty(filter))
-            {
-                query = query.Where(s => s.Model.Contains(filter));
-            }
-            return View(query.ToList());
+            return View(db.Machines.ToList());
         }
 
         // GET: Machines/Details/5

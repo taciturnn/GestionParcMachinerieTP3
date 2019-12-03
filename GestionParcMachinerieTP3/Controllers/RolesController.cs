@@ -92,7 +92,6 @@ namespace GestionParcMachinerieTP3.Controllers
             var role = await RoleManager.FindByIdAsync(id);
             await RoleManager.DeleteAsync(role);
             return RedirectToAction("Manage");
-
         }
     }
 }

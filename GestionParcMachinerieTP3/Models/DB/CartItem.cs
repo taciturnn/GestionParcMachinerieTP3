@@ -7,8 +7,8 @@ namespace GestionParcMachinerieTP3.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public int? MachineId { get; set; }
-        public long? From { get; set; }
-        public long? To { get; set; }
+        public int MachineId { get; set; }
+        public long From { get; set; }
+        public long To { get; set; }
     }
 }

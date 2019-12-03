@@ -1,0 +1,113 @@
+﻿@model IEnumerable<GestionParcMachinerieTP3.Models.CartItemViewModel>
+
+@{
+    ViewBag.Title = "Cart";
+    ViewBag.Valid = true;
+    ViewBag.AtLeatOneItem = false;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Cart</h2>
+
+@foreach (var item in Model)
+{
+    ViewBag.AtLeatOneItem = true;
+    if (!item.Valid)
+    {
+        ViewBag.Valid = false;
+        break;
+    }
+}
+
+@if (!ViewBag.Valid)
+{
+    <h4 style="font-style: italic; font-weight: bold; background-color: #d45555;">! Warning, one or more items in your cart is no longer available.</h4>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.From)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.To)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cost)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (!item.Valid)
+        {
+            <tr style="background-color:#d45555">
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.From)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.To)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.ActionLink("Remove From Cart", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.From)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.To)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.ActionLink("Remove From Cart", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+
+        }
+    }
+
+
+</table>
+
+@if (ViewBag.Valid && ViewBag.AtLeatOneItem)
+{
+    @Html.ActionLink("Order", "Index", null, new { @class = "btn btn-default" })
+}

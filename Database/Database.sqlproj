@@ -73,6 +73,6 @@
     <Build Include="AspNetUserClaims.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CartItems.sql" />
+    <Build Include="CartItems.sql" />
   </ItemGroup>
 </Project>

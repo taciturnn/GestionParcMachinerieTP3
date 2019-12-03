@@ -5,6 +5,6 @@
     [MachineId] INT NOT NULL, 
     [From] BIGINT NOT NULL, 
     [To] BIGINT NOT NULL, 
-	CONSTRAINT [FK_dbo.command_dbo.Machines_Id] FOREIGN KEY ([MachineId]) REFERENCES [dbo].[Machines] ([Id]),
-	CONSTRAINT [FK_dbo.command_dbo.AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id])
+	CONSTRAINT [FK_dbo.cart_dbo.Machines_Id] FOREIGN KEY ([MachineId]) REFERENCES [dbo].[Machines] ([Id]),
+	CONSTRAINT [FK_dbo.cart_dbo.AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id])
 )

@@ -72,4 +72,7 @@
     <Build Include="AspNetUserLogins.sql" />
     <Build Include="AspNetUserClaims.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="CartItems.sql" />
+  </ItemGroup>
 </Project>

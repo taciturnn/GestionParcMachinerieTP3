@@ -41,5 +41,7 @@ namespace GestionParcMachinerieTP3.Models
         }
 
         public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.AccountViewModel> AccountViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.Machine> Machines { get; set; }
     }
 }

@@ -176,12 +176,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\DB\CartItem.cs" />
     <Compile Include="Models\DB\Bill.cs" />
     <Compile Include="Models\DB\Command.cs" />
     <Compile Include="DAL\MachinerieContext.cs" />
     <Compile Include="Models\DB\Machine.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\CartItemViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -233,16 +235,17 @@
     <Content Include="Views\Machines\Delete.cshtml" />
     <Content Include="Views\Machines\Details.cshtml" />
     <Content Include="Views\Machines\Edit.cshtml" />
-    <Content Include="Views\Machines\Index.cshtml" />
-    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Machines\Manage.cshtml" />
+    <Content Include="Views\Roles\Manage.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Delete.cshtml" />
-    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Machines\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

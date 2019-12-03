@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using GestionParcMachinerieTP3.DAL;
 using GestionParcMachinerieTP3.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 
 namespace GestionParcMachinerieTP3.Controllers
@@ -136,6 +139,22 @@ namespace GestionParcMachinerieTP3.Controllers
             db.Machines.Remove(machine);
             db.SaveChanges();
             return RedirectToAction("Manage");
+        }
+
+        [Authorize]
+        [HttpPost, ActionName("AddToCart")]
+        public ActionResult AddToCart(int machineId, int from, int to)
+        {
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+            CartItem item = new CartItem();
+            item.From = from;
+            item.To = to;
+            item.MachineId = machineId;
+            item.UserId = user.Id;
+            db.CartItems.Add(item);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

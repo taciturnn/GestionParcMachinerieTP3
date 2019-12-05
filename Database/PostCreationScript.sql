@@ -1,5 +1,10 @@
 ﻿/* Post creation script here. Seed data here*/
 
+DELETE FROM dbo.AspNetUserRoles;
+DELETE FROM dbo.AspNetRoles;
+DELETE FROM dbo.AspNetUsers;
+DELETE FROM dbo.Machines;
+
 INSERT INTO dbo.AspNetRoles (Id, Name, Discriminator) VALUES ('252af317-07fb-4021-b33f-156c19ab258b', 'Client', 'ApplicationRole'),
 		('6f21fe44-08aa-4f1c-be97-10ea6a065b29', 'Admin', 'ApplicationRole'), 
 		('70ab5a67-c1cc-42f6-be13-d9460accd661', 'SuperAdmin', 'ApplicationRole')

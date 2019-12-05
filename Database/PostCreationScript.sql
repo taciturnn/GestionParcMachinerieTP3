@@ -1,9 +1,5 @@
 ﻿/* Post creation script here. Seed data here*/
 
-DELETE FROM dbo.AspNetUserRoles;
-DELETE FROM dbo.AspNetRoles;
-DELETE FROM dbo.AspNetUsers;
-DELETE FROM dbo.Machines;
 
 INSERT INTO dbo.AspNetRoles (Id, Name, Discriminator) VALUES ('252af317-07fb-4021-b33f-156c19ab258b', 'Client', 'ApplicationRole'),
 		('6f21fe44-08aa-4f1c-be97-10ea6a065b29', 'Admin', 'ApplicationRole'), 
@@ -84,3 +80,16 @@ VALUES	(195, 'Excavator Type A - CAT - 2019', 'orem ipsum dolor sit amet, consec
 		(214, 'Dump Truck -  John Deere - 2015', 'orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'), 
 		(214, 'Dump Truck -  John Deere - 2015', 'orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'),
 		(214, 'Dump Truck -  John Deere - 2015', 'orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')
+
+INSERT INTO dbo.Commands(UserId, MachineId, [From], [To], Status)
+VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 3, 12345, 12345, NULL),
+		('85846eae-d124-43b0-8046-5a18815741c8', 4, 12345, 12345, NULL), 
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 5, 12345, 12345, NULL),
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 6, 12345, 12345, NULL)
+
+INSERT INTO dbo.Bills(UserId, Paid, Value)
+VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 0, 123), 
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 0, 345)
+
+INSERT INTO dbo.BillCommands(CommandId, BillId)
+VALUES (1, 1), (2, 1), (3, 2), (4, 2)

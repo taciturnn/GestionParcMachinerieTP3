@@ -38,8 +38,6 @@ namespace GestionParcMachinerieTP3.Controllers
                 query = query.Where(s => s.Model.Contains(filter));
             }
 
-            //from = from == null ? DateTime.Now : from;
-            //to = to == null ? DateTime.Now : to;
             long from_ = from.GetValueOrDefault(DateTime.Now).ToBinary();
             long to_ = to.GetValueOrDefault(DateTime.Now).ToBinary();
             List<int?> unavailable = db.Commands.Where(

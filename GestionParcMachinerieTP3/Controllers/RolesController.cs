@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace GestionParcMachinerieTP3.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private ApplicationRoleManager _roleManager;
@@ -36,7 +37,7 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // GET: Roles
-        public ActionResult Index()
+        public ActionResult Manage()
         {
             List<RoleViewModel> list = new List<RoleViewModel>();
             foreach(var role in RoleManager.Roles)
@@ -56,7 +57,7 @@ namespace GestionParcMachinerieTP3.Controllers
         {
             var role = new ApplicationRole() { Name = model.Name };
             await RoleManager.CreateAsync(role);
-            return RedirectToAction("Index");
+            return RedirectToAction("Manage");
         }
 
         public async Task<ActionResult> Edit(string id)
@@ -70,7 +71,7 @@ namespace GestionParcMachinerieTP3.Controllers
         {
             var role = new ApplicationRole() { Id = model.Id, Name = model.Name }; 
             await RoleManager.UpdateAsync(role);
-            return RedirectToAction("Index");
+            return RedirectToAction("Manage");
         }
 
         public async Task<ActionResult> Details(string id)
@@ -90,8 +91,7 @@ namespace GestionParcMachinerieTP3.Controllers
         {
             var role = await RoleManager.FindByIdAsync(id);
             await RoleManager.DeleteAsync(role);
-            return RedirectToAction("Index");
-
+            return RedirectToAction("Manage");
         }
     }
 }

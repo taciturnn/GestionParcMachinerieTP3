@@ -68,8 +68,9 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         //
-        // GET: /Account/Index
-        public ActionResult Index()
+        // GET: /Account/Manage
+        [Authorize(Roles = "Admin")]
+        public ActionResult Manage()
         {
             List<AccountViewModel> list = new List<AccountViewModel>();
             foreach (var user in UserManager.Users)
@@ -81,6 +82,7 @@ namespace GestionParcMachinerieTP3.Controllers
 
         //
         // GET: /Account/Edit
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(string id)
         {
             var user = await UserManager.FindByIdAsync(id);
@@ -100,6 +102,7 @@ namespace GestionParcMachinerieTP3.Controllers
             return View(new AccountViewModel(user));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> Edit(AccountViewModel model)
         {
@@ -119,15 +122,17 @@ namespace GestionParcMachinerieTP3.Controllers
 
             await UserManager.AddToRolesAsync(user.Id, model.RoleName);
             
-            return RedirectToAction("Index");
+            return RedirectToAction("Manage");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Details(string id)
         {
             var user = await UserManager.FindByIdAsync(id);
             return View(new AccountViewModel(user, UserManager.GetRoles(user.Id).First()));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(string id)
         {
             var user = await UserManager.FindByIdAsync(id);
@@ -139,7 +144,7 @@ namespace GestionParcMachinerieTP3.Controllers
         {
             var user = await UserManager.FindByIdAsync(id);
             await UserManager.DeleteAsync(user);
-            return RedirectToAction("Index");
+            return RedirectToAction("Manage");
         }
 
         //

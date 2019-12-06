@@ -1,28 +1,12 @@
 ﻿@model IEnumerable<GestionParcMachinerieTP3.Models.Machine>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Machines";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Machines</h2>
 
-<form asp-controller="Machines" asp-action="Index" method="get">
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <input type="text" name="filter" class="form-control" placeholder="Model">
-        </div>
-        <div class="col-12 col-md-6">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-    </div>
-</form>
-
-<br/><hr/><br/>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -43,9 +27,7 @@
             @Html.DisplayFor(modelItem => item.RentPrice)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Details", "Details", new { id=item.Id })
         </td>
     </tr>
 }

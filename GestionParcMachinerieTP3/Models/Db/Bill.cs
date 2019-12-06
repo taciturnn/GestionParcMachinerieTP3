@@ -7,8 +7,10 @@ namespace GestionParcMachinerieTP3.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public string Commands { get; set; }
         public bool Paid { get; set; }
         public int? Value { get; set; }
+
+        public virtual AspNetUser User { get; set; }
+        public virtual ICollection<BillCommands> BillCommands { get; set; }
     }
 }

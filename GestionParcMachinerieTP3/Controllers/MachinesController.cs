@@ -8,13 +8,16 @@ using System.Web;
 using System.Web.Mvc;
 using GestionParcMachinerieTP3.DAL;
 using GestionParcMachinerieTP3.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System.Threading.Tasks;
 
 namespace GestionParcMachinerieTP3.Controllers
 {
     public class MachinesController : Controller
     {
-        private readonly MachinerieContext db;
+        private MachinerieContext db = new MachinerieContext();
 
         public MachinesController()
         {
@@ -35,6 +38,13 @@ namespace GestionParcMachinerieTP3.Controllers
                 query = query.Where(s => s.Model.Contains(filter));
             }
             return View(query.ToList());
+        }
+
+        // GET: Machines
+        [Authorize(Roles = "Admin")]
+        public ActionResult Manage()
+        {
+            return View(db.Machines.ToList());
         }
 
         // GET: Machines/Details/5
@@ -69,13 +79,14 @@ namespace GestionParcMachinerieTP3.Controllers
             {
                 db.Machines.Add(machine);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Manage");
             }
 
             return View(machine);
         }
 
         // GET: Machines/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -94,19 +105,21 @@ namespace GestionParcMachinerieTP3.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Model,RentPrice")] Machine machine)
+        public ActionResult Edit([Bind(Include = "Id,Model,RentPrice,Description")] Machine machine)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(machine).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Manage");
             }
             return View(machine);
         }
 
         // GET: Machines/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -122,6 +135,7 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // POST: Machines/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -129,6 +143,22 @@ namespace GestionParcMachinerieTP3.Controllers
             Machine machine = db.Machines.Find(id);
             db.Machines.Remove(machine);
             db.SaveChanges();
+            return RedirectToAction("Manage");
+        }
+
+        [Authorize]
+        [HttpPost, ActionName("AddToCart")]
+        public ActionResult AddToCart(int machineId, int from, int to)
+        {
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+            CartItem item = new CartItem();
+            item.From = from;
+            item.To = to;
+            item.MachineId = machineId;
+            item.UserId = user.Id;
+            db.CartItems.Add(item);
+            db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 

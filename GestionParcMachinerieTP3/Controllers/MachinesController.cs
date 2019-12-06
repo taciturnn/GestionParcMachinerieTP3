@@ -30,13 +30,23 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // GET: Machines
-        public ActionResult Index(string filter)
+        public ActionResult Index(string filter, DateTime? from, DateTime? to)
         {
             IQueryable<Machine> query = db.Machines;
             if (!String.IsNullOrEmpty(filter))
             {
                 query = query.Where(s => s.Model.Contains(filter));
             }
+
+            //from = from == null ? DateTime.Now : from;
+            //to = to == null ? DateTime.Now : to;
+            long from_ = from.GetValueOrDefault(DateTime.Now).ToBinary();
+            long to_ = to.GetValueOrDefault(DateTime.Now).ToBinary();
+            List<int?> unavailable = db.Commands.Where(
+                (s => (s.From >= from_ && s.From <= to_) || (s.To >= from_ && s.To <= to_))
+            ).Select(s => s.MachineId).ToList();
+            query = query.Where(s => !unavailable.Contains(s.Id));
+            
             return View(query.ToList());
         }
 

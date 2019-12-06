@@ -1,0 +1,10 @@
+D:\GitHub\GestionParcMachinerieTP3\Database\bin\Debug\Database.dacpac
+D:\GitHub\GestionParcMachinerieTP3\Database\bin\Debug\Database.dll
+D:\GitHub\GestionParcMachinerieTP3\Database\bin\Debug\Database.pdb
+D:\GitHub\GestionParcMachinerieTP3\Database\obj\Debug\Database.sqlprojAssemblyReference.cache
+D:\GitHub\GestionParcMachinerieTP3\Database\obj\Debug\Database.dll
+D:\GitHub\GestionParcMachinerieTP3\Database\obj\Debug\Database.pdb
+D:\GitHub\GestionParcMachinerieTP3\Database\obj\Debug\Model.xml
+D:\GitHub\GestionParcMachinerieTP3\Database\obj\Debug\refactor.xml
+D:\GitHub\GestionParcMachinerieTP3\Database\obj\Debug\postdeploy.sql
+D:\GitHub\GestionParcMachinerieTP3\Database\obj\Debug\predeploy.sql

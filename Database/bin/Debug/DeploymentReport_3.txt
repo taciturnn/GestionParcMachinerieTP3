@@ -1,0 +1,39 @@
+﻿** Met en surbrillance
+     Tables à reconstruire
+       Aucun
+     Index ordonnés en clusters à supprimer
+       Aucun
+     Index ordonnés en clusters à créer.
+       Aucun
+     Problèmes de données possibles
+       Aucun
+
+** Actions de l'utilisateur
+     Créer
+       [dbo].[AspNetRoles] (Table)
+       [dbo].[AspNetRoles].[RoleNameIndex] (Index)
+       [dbo].[AspNetUserClaims] (Table)
+       [dbo].[AspNetUserClaims].[IX_UserId] (Index)
+       [dbo].[AspNetUserLogins] (Table)
+       [dbo].[AspNetUserLogins].[IX_UserId] (Index)
+       [dbo].[AspNetUserRoles] (Table)
+       [dbo].[AspNetUserRoles].[IX_UserId] (Index)
+       [dbo].[AspNetUserRoles].[IX_RoleId] (Index)
+       [dbo].[AspNetUsers] (Table)
+       [dbo].[AspNetUsers].[UserNameIndex] (Index)
+       [dbo].[Bills] (Table)
+       [dbo].[CartItems] (Table)
+       [dbo].[Commands] (Table)
+       [dbo].[Machines] (Table)
+       Contrainte par défaut: contrainte sans nom sur [dbo].[Bills] (Contrainte par défaut)
+       [dbo].[FK_dbo.AspNetUserClaims_dbo.AspNetUsers_UserId] (Clé étrangère)
+       [dbo].[FK_dbo.AspNetUserLogins_dbo.AspNetUsers_UserId] (Clé étrangère)
+       [dbo].[FK_dbo.AspNetUserRoles_dbo.AspNetRoles_RoleId] (Clé étrangère)
+       [dbo].[FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId] (Clé étrangère)
+       [dbo].[FK_dbo.Bills_dbo.AspNetUsers_UserId] (Clé étrangère)
+       [dbo].[FK_dbo.cart_dbo.Machines_Id] (Clé étrangère)
+       [dbo].[FK_dbo.cart_dbo.AspNetUsers_UserId] (Clé étrangère)
+       [dbo].[FK_dbo.command_dbo.Machines_Id] (Clé étrangère)
+       [dbo].[FK_dbo.command_dbo.AspNetUsers_UserId] (Clé étrangère)
+
+** Actions de support

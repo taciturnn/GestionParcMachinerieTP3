@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GestionParcMachinerieTP3.Models.Machine>
+@model IEnumerable<GestionParcMachinerieTP3.Models.Machine>
 
 @{
     ViewBag.Title = "Machines";
@@ -6,6 +6,19 @@
 }
 
 <h2>Machines</h2>
+
+<form asp-controller="Machines" asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <input type="text" name="filter" class="form-control" placeholder="Model">
+        </div>
+        <div class="col-12 col-md-6">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<br/><hr/><br/>
 
 <table class="table">
     <tr>

@@ -17,7 +17,7 @@ namespace GestionParcMachinerieTP3.Controllers
 {
     public class MachinesController : Controller
     {
-        private MachinerieContext db = new MachinerieContext();
+        private MachinerieContext db;
 
         public MachinesController()
         {

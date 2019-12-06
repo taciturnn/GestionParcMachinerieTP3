@@ -62,6 +62,7 @@
     <Build Include="Commands.sql" />
     <Build Include="Machines.sql" />
     <Build Include="AspNetRoles.sql" />
+    <Build Include="BillCommands.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostCreationScript.sql" />

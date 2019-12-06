@@ -17,7 +17,7 @@ namespace GestionParcMachinerieTP3.Controllers
 {
     public class MachinesController : Controller
     {
-        private MachinerieContext db = new MachinerieContext();
+        private MachinerieContext db;
 
         public MachinesController()
         {
@@ -30,9 +30,22 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // GET: Machines
-        public ActionResult Index()
+        public ActionResult Index(string filter, DateTime? from, DateTime? to)
         {
-            return View(db.Machines.ToList());
+            IQueryable<Machine> query = db.Machines;
+            if (!String.IsNullOrEmpty(filter))
+            {
+                query = query.Where(s => s.Model.Contains(filter));
+            }
+
+            long from_ = from.GetValueOrDefault(DateTime.Now).ToBinary();
+            long to_ = to.GetValueOrDefault(DateTime.Now).ToBinary();
+            List<int?> unavailable = db.Commands.Where(
+                (s => (s.From >= from_ && s.From <= to_) || (s.To >= from_ && s.To <= to_))
+            ).Select(s => s.MachineId).ToList();
+            query = query.Where(s => !unavailable.Contains(s.Id));
+            
+            return View(query.ToList());
         }
 
         // GET: Machines

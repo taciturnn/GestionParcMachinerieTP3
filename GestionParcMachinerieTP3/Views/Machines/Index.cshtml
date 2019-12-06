@@ -7,6 +7,30 @@
 
 <h2>Machines</h2>
 
+<form asp-controller="Machines" asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <input type="date" name="from" class="form-control" required>
+        </div>
+        <div class="col-12 col-md-6">
+            <input type="date" name="to" class="form-control" required>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <input type="text" name="filter" class="form-control" placeholder="Model">
+        </div>
+        <div class="col-12 col-md-6">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<br />
+<hr />
+<br />
+
 <table class="table">
     <tr>
         <th>
@@ -18,18 +42,29 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Model)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RentPrice)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "Details", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentPrice)
+            </td>
+            <td>
+                @using (Html.BeginForm("AddToCart", "Machines", new { machineId = item.Id, from = 0, to = 0 }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                    <input type="submit" value="Add to cart" class="btn btn-default" />
+                }
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

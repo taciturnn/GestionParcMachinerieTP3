@@ -1,0 +1,25 @@
+﻿@model GestionParcMachinerieTP3.Models.CartItemViewModel
+
+@{
+    ViewBag.Title = "Command Item from Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Command Item from Cart</h2>
+
+<p>Thanks for your order .</p>
+<div>
+
+   
+    
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+           
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

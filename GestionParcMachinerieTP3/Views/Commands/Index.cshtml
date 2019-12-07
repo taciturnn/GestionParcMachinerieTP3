@@ -1,90 +1,57 @@
 ﻿@model IEnumerable<GestionParcMachinerieTP3.Models.Command>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewBag.Title = "Index";
 }
 
-<h1>Index</h1>
-<form asp-controller="Commands" asp-action="Index" method="get">
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <label for="from">From</label>
-            <input type="date" name="from" id="from" class="form-control">
-        </div>
-
-        <div class="col-12 col-md-6">
-            <label for="to">To</label>
-            <input type="date" name="to" id="to" class="form-control">
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <input type="text" name="machine" id="machine" class="form-control" placeholder="Machine">
-        </div>
-
-        <div class="col-12 col-md-6">
-            <input type="text" name="status" id="status" class="form-control" placeholder="Status">
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-12" style="text-align: center;">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </div>
-    </div>
-</form>
-
-<br/><hr/><br/>
+<h2>Index</h2>
 
 <p>
-    <a type="button" class="btn btn-success" asp-action="Create">Create New</a>
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.From)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.To)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Machine)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Machine.Model)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.From)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.To)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.From)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.To)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Machine.Model)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" })
-                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Machine.Model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.From)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.To)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
 }
-    </tbody>
+
 </table>

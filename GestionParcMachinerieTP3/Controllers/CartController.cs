@@ -6,6 +6,10 @@ using System.Net;
 using System.Web.Mvc;
 using GestionParcMachinerieTP3.DAL;
 using GestionParcMachinerieTP3.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Threading.Tasks;
 
 namespace GestionParcMachinerieTP3.Controllers
 {
@@ -27,14 +31,87 @@ namespace GestionParcMachinerieTP3.Controllers
         // GET: Cart
         public ActionResult Index()
         {
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
             List<CartItemViewModel> list = new List<CartItemViewModel>();
             foreach (var cartItem in db.CartItems)
             {
-                var machine = db.Machines.Find(cartItem.MachineId);
-                list.Add(new CartItemViewModel(cartItem, machine, validate(machine, cartItem.From, cartItem.To)));
+                if (cartItem.UserId == user.Id)
+                {
+                    var machine = db.Machines.Find(cartItem.MachineId);
+                    list.Add(new CartItemViewModel(cartItem, machine, validate(machine, cartItem.From, cartItem.To)));
+                }
             }
             return View(list);
         }
+
+        [Authorize]
+        [HttpPost, ActionName("AddToCommands")]
+        public ActionResult AddToCommands(int cartId)
+        {
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+            Command item = new Command();
+            CartItem itemSupr = db.CartItems.Find(cartId);
+            foreach (var cartItem in db.CartItems)
+            {
+                if (cartItem.Id == cartId)
+                {
+                    
+                    item.From = cartItem.From;
+                    item.To = cartItem.To ;
+                    item.MachineId = cartItem.MachineId ;
+                    item.UserId = user.Id;
+                    item.Status = null;
+                }
+                 
+            }
+            
+            
+            db.Commands.Add(item);
+            db.CartItems.Remove(itemSupr);
+
+            db.SaveChanges();
+
+            return View("AddToCommands");
+        }
+
+
+
+        [Authorize]
+        [HttpPost, ActionName("AddAllToCommands")]
+        public ActionResult AddAllToCommands()
+        {
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+            Command item = new Command();
+            CartItem itemSupr = new CartItem();
+            foreach (var cartItem in db.CartItems)
+            {
+                if (cartItem.UserId == user.Id)
+                {
+
+                    itemSupr = db.CartItems.Find(cartItem.Id);
+
+                    
+                    item.From = cartItem.From;
+                    item.To = cartItem.To;
+                    item.MachineId = cartItem.MachineId;
+                    item.UserId = user.Id;
+                    item.Status = null;
+
+                    db.Commands.Add(item);
+                    db.CartItems.Remove(itemSupr);
+                }
+                
+            }          
+
+            db.SaveChanges();
+
+            return View("AddToCommands");
+        }
+
+
+
+
+
 
         // GET: Machines/Delete/5
         public ActionResult Delete(int? id)

@@ -93,3 +93,10 @@ VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 0, 123),
 
 INSERT INTO dbo.BillCommands(CommandId, BillId)
 VALUES (1, 1), (2, 1), (3, 2), (4, 2)
+
+INSERT INTO dbo.CartItems(UserId, MachineId, [From], [To])
+VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 3, 3, 13),
+		('85846eae-d124-43b0-8046-5a18815741c8', 4, 1245, 1247), 
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 5, 123, 125),
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 6, 123, 125),
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 5, 123000, 125000)

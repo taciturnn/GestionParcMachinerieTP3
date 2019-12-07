@@ -8,17 +8,27 @@ using System.Web;
 using System.Web.Mvc;
 using GestionParcMachinerieTP3.DAL;
 using GestionParcMachinerieTP3.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace GestionParcMachinerieTP3.Controllers
 {
+    [Authorize]
     public class BillsController : Controller
     {
         private MachinerieContext db = new MachinerieContext();
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult Manage()
+        {
+            return View(db.Bills.ToList());
+        }
+
         // GET: Bills
         public ActionResult Index()
         {
-            return View(db.Bills.ToList());
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+            return View(db.Bills.Where(s => (s.UserId == user.Id)).ToList());
         }
 
         // GET: Bills/Details/5
@@ -89,7 +99,7 @@ namespace GestionParcMachinerieTP3.Controllers
             {
                 db.Entry(bill).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Manage");
             }
             return View(bill);
         }
@@ -119,7 +129,7 @@ namespace GestionParcMachinerieTP3.Controllers
             Bill bill = db.Bills.Find(id);
             db.Bills.Remove(bill);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Manage");
         }
 
         protected override void Dispose(bool disposing)

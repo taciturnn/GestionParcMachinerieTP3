@@ -14,6 +14,7 @@ namespace GestionParcMachinerieTP3.DAL
         public virtual DbSet<Command> Commands { get; set; }
         public virtual DbSet<Machine> Machines { get; set; }
         public virtual DbSet<CartItem> CartItems { get; set; }
+        public virtual DbSet<BillCommand> BillCommands { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

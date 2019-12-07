@@ -8,9 +8,12 @@ using System.Web;
 using System.Web.Mvc;
 using GestionParcMachinerieTP3.DAL;
 using GestionParcMachinerieTP3.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace GestionParcMachinerieTP3.Controllers
 {
+    [Authorize]
     public class CommandsController : Controller
     {
         private MachinerieContext db;
@@ -25,21 +28,30 @@ namespace GestionParcMachinerieTP3.Controllers
             this.db = db;
         }
 
-        // GET: Commands
-        public ActionResult Index(DateTime? from, DateTime? to, string machine, string status)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Manage()
         {
-            IQueryable<Command> query = db.Commands;
-            if (from.HasValue) query = query.Where(s => s.From.GetValueOrDefault(0L) == from.Value.ToBinary());
-            if (to.HasValue) query = query.Where(s => s.To.GetValueOrDefault(0L) == to.Value.ToBinary());
-            if (!String.IsNullOrEmpty(machine))
+            List<CommandViewModel> list = new List<CommandViewModel>();
+            foreach (var command in db.Commands)
             {
-                query = query.Where(s => s.Machine.Model.Contains(machine));
+                var machine = db.Machines.Find(command.MachineId);
+                var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(command.UserId);
+                list.Add(new CommandViewModel(command, machine, user.Email));
             }
-            if (!String.IsNullOrEmpty(status))
+            return View(list);
+        }
+
+        // GET: Commands
+        public ActionResult Index()
+        { 
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
+            List<CommandViewModel> list = new List<CommandViewModel>();
+            foreach (var command in db.Commands.Where(s => (s.UserId == user.Id)))
             {
-                query = query.Where(s => s.Status.Contains(status));
+                    var machine = db.Machines.Find(command.MachineId);
+                    list.Add(new CommandViewModel(command, machine, user.Email));
             }
-            return View(query.Include(c => c.Machine).ToList());
+            return View(list);
         }
 
         // GET: Commands/Details/5
@@ -54,7 +66,11 @@ namespace GestionParcMachinerieTP3.Controllers
             {
                 return HttpNotFound();
             }
-            return View(command);
+
+            var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(command.UserId);
+            List<CommandViewModel> list = new List<CommandViewModel>();
+            var machine = db.Machines.Find(command.MachineId);
+            return View(new CommandViewModel(command, machine, user.Email));
         }
 
         // GET: Commands/Create
@@ -113,7 +129,7 @@ namespace GestionParcMachinerieTP3.Controllers
             {
                 db.Entry(command).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Manage");
             }
             ViewBag.MachineId = new SelectList(db.Machines, "Id", "Model", command.MachineId);
             return View(command);
@@ -144,7 +160,7 @@ namespace GestionParcMachinerieTP3.Controllers
             Command command = db.Commands.Find(id);
             db.Commands.Remove(command);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Manage");
         }
 
         protected override void Dispose(bool disposing)
@@ -155,5 +171,6 @@ namespace GestionParcMachinerieTP3.Controllers
             }
             base.Dispose(disposing);
         }
+
     }
 }

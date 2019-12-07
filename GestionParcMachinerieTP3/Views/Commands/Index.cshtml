@@ -1,21 +1,16 @@
-﻿@model IEnumerable<GestionParcMachinerieTP3.Models.Command>
+﻿@model IEnumerable<GestionParcMachinerieTP3.Models.CommandViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "My Commands";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>My Commands</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Machine.Model)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.MachineModel)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.From)
@@ -30,28 +25,23 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Machine.Model)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.From)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.To)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.MachineModel)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.From)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.To)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Status)
+    </td>
+    <td>
+        @Html.ActionLink("Details", "Details", new { id = item.Id })
+    </td>
+</tr>
 }
 
 </table>

@@ -1,29 +1,38 @@
-﻿@model GestionParcMachinerieTP3.Models.Command
+﻿@model GestionParcMachinerieTP3.Models.CommandViewModel
 
 @{
     ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Command</h4>
+    <h4>CommandViewModel</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Machine.Model)
+            @Html.DisplayNameFor(model => model.UserEmail)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Machine.Model)
+            @Html.DisplayFor(model => model.UserEmail)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserId)
+            @Html.DisplayNameFor(model => model.MachineId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.DisplayFor(model => model.MachineId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MachineModel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MachineModel)
         </dd>
 
         <dt>
@@ -50,9 +59,30 @@
             @Html.DisplayFor(model => model.Status)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+
+    @if (User.IsInRole("Admin"))
+    {
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+            @Html.ActionLink("Back to Commands Management", "Manage")
+
+        </td>
+    }
+    else
+    {
+        @Html.ActionLink("Back to My Commands", "Index")
+    }
+
 </p>

@@ -6,23 +6,57 @@
 }
 
 <h2>Machines</h2>
+@Html.ValidationSummary(false, "", new { @class = "text-danger"})
 
 <form asp-controller="Machines" asp-action="Index" method="get">
     <div class="row">
-        <div class="col-12 col-md-6">
-            <input type="date" name="from" class="form-control" required>
+        <div class="col-xs-1">
         </div>
-        <div class="col-12 col-md-6">
-            <input type="date" name="to" class="form-control" required>
+        <div class="col-xs-5">
+            @if (ViewBag.From != null)
+            {
+                <label for="from">Location start</label>
+                <input id="from" type="date" name="from" class="form-control" required value="@string.Format("{0:yyyy-MM-dd}", ViewBag.From)" style="max-width:none">
+            }
+            else
+            {
+                <label for="from">Location start</label>
+                <input id="from" type="date" name="from" class="form-control" required style="max-width:none">
+            }
+        </div>
+        <div class="col-xs-5">
+            @if (ViewBag.From != null)
+            {
+                <label for="to">Location end</label>
+                <input id="to" type="date" name="to" class="form-control" required value="@string.Format("{0:yyyy-MM-dd}", ViewBag.To)" style="max-width:none">
+            }
+            else
+            {
+                <label for="to">Location end</label>
+                <input id="to" type="date" name="to" class="form-control" required style="max-width:none">
+            }
+        </div>
+        <div class="col-xs-1">
         </div>
     </div>
     <br />
     <div class="row">
-        <div class="col-12 col-md-6">
-            <input type="text" name="filter" class="form-control" placeholder="Model">
+        <div class="col-xs-1">
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-xs-9">
+            @if (ViewBag.Filter != null)
+            {
+                <input type="text" name="filter" class="form-control" placeholder="Model" value="@ViewBag.Filter" style="max-width:none">
+            }
+            else
+            {
+                <input type="text" name="filter" class="form-control" placeholder="Model" style="max-width:none">
+            }
+        </div>
+        <div class="col-xs-1">
             <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <div class="col-xs-1">
         </div>
     </div>
 </form>
@@ -52,10 +86,10 @@
                 @Html.DisplayFor(modelItem => item.RentPrice)
             </td>
             <td>
-                @using (Html.BeginForm("AddToCart", "Machines", new { machineId = item.Id, from = 0, to = 0 }, FormMethod.Post))
+                @using (Html.BeginForm("AddToCart", "Machines", new { machineId = item.Id, from = ViewBag.From, to = ViewBag.To }, FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" })
                     <input type="submit" value="Add to cart" class="btn btn-default" />
                 }
             </td>

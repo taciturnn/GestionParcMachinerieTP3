@@ -32,19 +32,51 @@ namespace GestionParcMachinerieTP3.Controllers
         // GET: Machines
         public ActionResult Index(string filter, DateTime? from, DateTime? to)
         {
+            if (TempData["Error"] != null)
+            {
+                ModelState.AddModelError("", TempData["Error"].ToString());
+            }
+
             IQueryable<Machine> query = db.Machines;
             if (!String.IsNullOrEmpty(filter))
             {
                 query = query.Where(s => s.Model.Contains(filter));
+                ViewBag.Filter = filter;
             }
 
-            long from_ = from.GetValueOrDefault(DateTime.Now).ToBinary();
-            long to_ = to.GetValueOrDefault(DateTime.Now).ToBinary();
-            List<int?> unavailable = db.Commands.Where(
-                (s => (s.From >= from_ && s.From <= to_) || (s.To >= from_ && s.To <= to_))
-            ).Select(s => s.MachineId).ToList();
+            if (from == null || to == null)
+            {
+                // A start and end date is absolutely required
+                return View(new List<Machine>());
+            }
+
+            long from_, to_;
+            if (from <= to)
+            {
+                from_ = DateTimeHelper.DateTimeHelper.DateTimeToLong((DateTime)from);
+                to_ = DateTimeHelper.DateTimeHelper.DateTimeToLong((DateTime)to);
+            }
+            else
+            {
+                from_ = DateTimeHelper.DateTimeHelper.DateTimeToLong((DateTime)to);
+                to_ = DateTimeHelper.DateTimeHelper.DateTimeToLong((DateTime)from);
+            }
+
+            // Filter machines already commanded.
+            List<int> unavailable = db.Commands.Where(
+                            (s => (s.From >= from_ && s.From <= to_) || (s.To >= from_ && s.To <= to_) || (s.From <= from_ && s.To >= to_))
+                        ).Select(s => s.MachineId).ToList();
             query = query.Where(s => !unavailable.Contains(s.Id));
-            
+
+            // Filter machines already in cart.
+            List<int> unavailableFromCart = db.CartItems.Where(
+                            (s => (s.From >= from_ && s.From <= to_) || (s.To >= from_ && s.To <= to_) || (s.From <= from_ && s.To >= to_))
+                        ).Select(s => s.MachineId).ToList();
+            query = query.Where(s => !unavailableFromCart.Contains(s.Id));
+
+            ViewBag.From = from;
+            ViewBag.To = to;
+
             return View(query.ToList());
         }
 
@@ -110,7 +142,7 @@ namespace GestionParcMachinerieTP3.Controllers
         }
 
         // POST: Machines/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from over posting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -156,17 +188,27 @@ namespace GestionParcMachinerieTP3.Controllers
 
         [Authorize]
         [HttpPost, ActionName("AddToCart")]
-        public ActionResult AddToCart(int machineId, int from, int to)
+        public ActionResult AddToCart(int machineId, DateTime from, DateTime to)
         {
+            long from_ = DateTimeHelper.DateTimeHelper.DateTimeToLong(from);
+            long to_ = DateTimeHelper.DateTimeHelper.DateTimeToLong(to);
             var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
-            CartItem item = new CartItem();
-            item.From = from;
-            item.To = to;
-            item.MachineId = machineId;
-            item.UserId = user.Id;
-            db.CartItems.Add(item);
-            db.SaveChanges();
+            bool alreadyInCart = (db.CartItems.Where(
+                            (s => ((s.From >= from_ && s.From <= to_) || (s.To >= from_ && s.To <= to_) || (s.From <= from_ && s.To >= to_)) && s.MachineId == machineId && s.UserId == user.Id)
+                        ).Count() > 0);
+            if (!alreadyInCart)
+            {
+                CartItem item = new CartItem();
+                item.From = DateTimeHelper.DateTimeHelper.DateTimeToLong(from);
+                item.To = DateTimeHelper.DateTimeHelper.DateTimeToLong(to);
+                item.MachineId = machineId;
+                item.UserId = user.Id;
+                db.CartItems.Add(item);
+                db.SaveChanges();
 
+                return RedirectToAction("Index", "Cart");
+            }
+            TempData["Error"] = "The item is already in your cart";
             return RedirectToAction("Index");
         }
 

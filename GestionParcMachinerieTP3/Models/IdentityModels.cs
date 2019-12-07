@@ -47,5 +47,11 @@ namespace GestionParcMachinerieTP3.Models
         public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.CartItemViewModel> CartItemViewModels { get; set; }
 
         public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.Command> Commands { get; set; }
+
+        public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.CommandViewModel> CommandViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.Bill> Bills { get; set; }
+
+        public System.Data.Entity.DbSet<GestionParcMachinerieTP3.Models.AspNetUser> AspNetUsers { get; set; }
     }
 }

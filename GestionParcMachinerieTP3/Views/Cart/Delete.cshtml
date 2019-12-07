@@ -7,7 +7,7 @@
 
 <h2>Removing Item from Cart</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to remove this item from the cart?</h3>
 
 <div>
 
@@ -81,8 +81,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Remove" class="btn btn-default" /> |
+            @Html.ActionLink("Return to cart", "Index")
         </div>
     }
 </div>

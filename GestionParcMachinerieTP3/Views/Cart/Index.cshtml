@@ -120,25 +120,21 @@
                 {
                     <h4 style="font-style: italic; font-weight: bold; background-color: #d45555;">!Remove item is no longer available for order all item.</h4>
 
-
-
                 }
                 else
                 {
-                    using (Html.BeginForm("AddAllToCommands", "Cart", FormMethod.Post))
+                    if(ViewBag.AtLeatOneItem)
                     {
-                        @Html.AntiForgeryToken()
+                        using (Html.BeginForm("AddAllToCommands", "Cart", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
 
-                        <input type="submit" value="Command all item" class="btn btn-default" />
+                            <input type="submit" value="Command all item" class="btn btn-default" />
+                        }
                     }
                 }
-                /**/
-                /**/
-
             </td>
         </tr>
-
-
     </table>
 
 

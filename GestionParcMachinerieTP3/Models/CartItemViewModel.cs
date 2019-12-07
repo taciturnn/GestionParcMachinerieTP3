@@ -19,7 +19,7 @@ namespace GestionParcMachinerieTP3.Models
             ProductDescription = machine.Description;
             From = DateTimeHelper.DateTimeHelper.LongToDateTime(item.From).ToString("MM/dd/yyyy");
             To = DateTimeHelper.DateTimeHelper.LongToDateTime(item.To).ToString("MM/dd/yyyy");
-            Duration = DateTimeHelper.DateTimeHelper.LongDiff(item.From, item.To).Days;
+            Duration = DateTimeHelper.DateTimeHelper.LongDiff(item.From, item.To).Days + 1; // Same date -> diff = 0
             Cost = Duration * ProductPrice;
             Valid = isValid;
             ProductId = machine.Id;

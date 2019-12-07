@@ -11,6 +11,6 @@ namespace GestionParcMachinerieTP3.Models
         public int? Value { get; set; }
 
         public virtual AspNetUser User { get; set; }
-        public virtual ICollection<BillCommands> BillCommands { get; set; }
+        public virtual ICollection<BillCommand> BillCommands { get; set; }
     }
 }

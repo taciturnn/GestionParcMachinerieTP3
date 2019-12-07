@@ -180,6 +180,7 @@
     </Compile>
     <Compile Include="Helper\DateTimeHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CommandViewModel.cs" />
     <Compile Include="Models\DB\AspNetUser.cs" />
     <Compile Include="Models\DB\BillCommands.cs" />
     <Compile Include="Models\DB\CartItem.cs" />
@@ -262,8 +263,10 @@
     <Content Include="Views\Commands\Delete.cshtml" />
     <Content Include="Views\Commands\Details.cshtml" />
     <Content Include="Views\Commands\Edit.cshtml" />
-    <Content Include="Views\Commands\Index.cshtml" />
     <Content Include="Views\Cart\AddToCommands.cshtml" />
+    <Content Include="Views\Commands\Index.cshtml" />
+    <Content Include="Views\Commands\Manage.cshtml" />
+    <Content Include="Views\Bills\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -44,7 +44,11 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
             @Html.ActionLink("Back to Machine Management", "Manage")
-
         </td>
+    }
+    else
+    {
+
+        @Html.ActionLink("Back to Machines", "Index")
     }
 </p>

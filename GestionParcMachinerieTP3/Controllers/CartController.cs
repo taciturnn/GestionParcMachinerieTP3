@@ -51,46 +51,68 @@ namespace GestionParcMachinerieTP3.Controllers
             var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
             Command item = new Command();
             CartItem itemSupr = db.CartItems.Find(cartId);
+            long cost = 0;
             foreach (var cartItem in db.CartItems)
             {
                 if (cartItem.Id == cartId)
                 {
-                    
+
+                    long Duration = DateTimeHelper.DateTimeHelper.LongDiff(cartItem.From, cartItem.To).Days + 1; // Same date -> diff = 0
+                    Machine machine = db.Machines.Find(cartItem.MachineId);
+                    cost += machine.RentPrice * Duration;
+
                     item.From = cartItem.From;
                     item.To = cartItem.To ;
                     item.MachineId = cartItem.MachineId ;
                     item.UserId = user.Id;
                     item.Status = null;
+                    break;
                 }
-                 
             }
             
-            
-            db.Commands.Add(item);
+            // New command
+            var newCommandId = db.Commands.Add(item).Id;
             db.CartItems.Remove(itemSupr);
 
-            db.SaveChanges();
+            // Create bill
+            Bill bill = new Bill();
+            bill.UserId = user.Id;
+            bill.Value = (int)cost;
+            var newBillId = db.Bills.Add(bill).Id;
 
+            // Add commands to bill
+            BillCommand billCommand = new BillCommand();
+            billCommand.BillId = newBillId;
+            billCommand.CommandId = newCommandId;
+            db.BillCommands.Add(billCommand);
+
+            // Save
+            db.SaveChanges();
             return View("AddToCommands");
         }
-
-
 
         [Authorize]
         [HttpPost, ActionName("AddAllToCommands")]
         public ActionResult AddAllToCommands()
         {
             var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
-            Command item = new Command();
             CartItem itemSupr = new CartItem();
-            foreach (var cartItem in db.CartItems)
+            List<int> commandIds = new List<int>();
+            long cost = 0;
+            var cartItems = db.CartItems.ToList();
+            for(int i = 0; i < cartItems.Count(); i++)
             {
+                var cartItem = cartItems[i];
                 if (cartItem.UserId == user.Id)
                 {
+                    Command item = new Command();
+
+                    long Duration = DateTimeHelper.DateTimeHelper.LongDiff(cartItem.From, cartItem.To).Days + 1; // Same date -> diff = 0
+                    Machine machine = db.Machines.Find(cartItem.MachineId);
+                    cost += machine.RentPrice * Duration;
 
                     itemSupr = db.CartItems.Find(cartItem.Id);
 
-                    
                     item.From = cartItem.From;
                     item.To = cartItem.To;
                     item.MachineId = cartItem.MachineId;
@@ -99,19 +121,31 @@ namespace GestionParcMachinerieTP3.Controllers
 
                     db.Commands.Add(item);
                     db.CartItems.Remove(itemSupr);
-                }
-                
-            }          
+                    db.SaveChanges();
 
+                    commandIds.Add(item.Id);
+                }
+            }
+
+            // Create bill
+            Bill bill = new Bill();
+            bill.UserId = user.Id;
+            bill.Value = (int)cost;
+            db.Bills.Add(bill);
             db.SaveChanges();
+
+            foreach (int commandId in commandIds)
+            {
+                // Add commands to bill
+                BillCommand billCommand = new BillCommand();
+                billCommand.BillId = bill.Id;
+                billCommand.CommandId = commandId;
+                db.BillCommands.Add(billCommand);
+                db.SaveChanges();
+            }
 
             return View("AddToCommands");
         }
-
-
-
-
-
 
         // GET: Machines/Delete/5
         public ActionResult Delete(int? id)

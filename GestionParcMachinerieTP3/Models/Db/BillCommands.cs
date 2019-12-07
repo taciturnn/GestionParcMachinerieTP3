@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GestionParcMachinerieTP3.Models
 {
-    public partial class BillCommands
+    public partial class BillCommand
     {
         public int Id { get; set; }
         public int CommandId { get; set; }

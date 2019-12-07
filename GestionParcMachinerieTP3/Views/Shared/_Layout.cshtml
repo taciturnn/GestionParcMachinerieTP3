@@ -26,7 +26,8 @@
                     <li>@Html.ActionLink("Machines", "Index", "Machines")</li>
                     @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Bills", "Index", "Bills")</li>
+                        <li>@Html.ActionLink("My Commands", "Index", "Commands")</li>
+                        <li>@Html.ActionLink("My Bills", "Index", "Bills")</li>
                     }
                     @if (User.IsInRole("Admin"))
                     {
@@ -39,6 +40,8 @@
                                 <li>@Html.ActionLink("Roles", "Manage", "Roles")</li>
                                 <li>@Html.ActionLink("Users", "Manage", "Account")</li>
                                 <li>@Html.ActionLink("Machines", "Manage", "Machines")</li>
+                                <li>@Html.ActionLink("Commands", "Manage", "Commands")</li>
+                                <li>@Html.ActionLink("Bills", "Manage", "Bills")</li>
                             </ul>
                         </li>
                     }

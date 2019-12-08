@@ -104,12 +104,13 @@ namespace GestionParcMachinerieTP3.Controllers
             for(int i = 0; i < cartItems.Count(); i++)
             {
                 var cartItem = cartItems[i];
-                if (cartItem.UserId == user.Id)
+                Machine machine = db.Machines.Find(cartItem.MachineId);
+                // validate userId and disponibility
+                if (cartItem.UserId == user.Id && validate(machine, cartItem.From, cartItem.To))
                 {
                     Command item = new Command();
 
                     long Duration = DateTimeHelper.DateTimeHelper.LongDiff(cartItem.From, cartItem.To).Days + 1; // Same date -> diff = 0
-                    Machine machine = db.Machines.Find(cartItem.MachineId);
                     cost += machine.RentPrice * Duration;
 
                     itemSupr = db.CartItems.Find(cartItem.Id);

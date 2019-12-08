@@ -82,21 +82,20 @@ VALUES	(195, 'Excavator Type A - CAT - 2019', 'orem ipsum dolor sit amet, consec
 		(214, 'Dump Truck -  John Deere - 2015', 'orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.')
 
 INSERT INTO dbo.Commands(UserId, MachineId, [From], [To], Status)
-VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 3, 12345, 12345, NULL),
-		('85846eae-d124-43b0-8046-5a18815741c8', 4, 12345, 12345, NULL), 
-		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 5, 12345, 12345, NULL),
-		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 6, 12345, 12345, NULL)
+VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 3, 1575746605, 1576746605, NULL),
+		('85846eae-d124-43b0-8046-5a18815741c8', 4, 1575746605, 1576746605, NULL), 
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 5, 1575746605, 1576746605, NULL),
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 6, 1575746605, 1576746605, NULL)
 
 INSERT INTO dbo.Bills(UserId, Paid, Value)
-VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 0, 123), 
-		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 0, 345)
+VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 1, 100), 
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 0, 1000)
 
 INSERT INTO dbo.BillCommands(CommandId, BillId)
 VALUES (1, 1), (2, 1), (3, 2), (4, 2)
 
 INSERT INTO dbo.CartItems(UserId, MachineId, [From], [To])
-VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 3, 3, 13),
-		('85846eae-d124-43b0-8046-5a18815741c8', 4, 1245, 1247), 
-		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 5, 123, 125),
-		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 6, 123, 125),
-		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 5, 123000, 125000)
+VALUES ('85846eae-d124-43b0-8046-5a18815741c8', 7, 1575746605, 1576746605),
+		('85846eae-d124-43b0-8046-5a18815741c8', 8, 1575746605, 1576746605), 
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 9, 1575746605, 1576746605),
+		('1ff6e90b-ec17-4160-81c8-749cc837a0ef', 10, 1575746605, 1576746605)

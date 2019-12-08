@@ -49,46 +49,47 @@ namespace GestionParcMachinerieTP3.Controllers
         public ActionResult AddToCommands(int cartId)
         {
             var user = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(User.Identity.GetUserId());
-            Command item = new Command();
-            CartItem itemSupr = db.CartItems.Find(cartId);
-            long cost = 0;
-            foreach (var cartItem in db.CartItems)
-            {
-                if (cartItem.Id == cartId)
-                {
-
-                    long Duration = DateTimeHelper.DateTimeHelper.LongDiff(cartItem.From, cartItem.To).Days + 1; // Same date -> diff = 0
-                    Machine machine = db.Machines.Find(cartItem.MachineId);
-                    cost += machine.RentPrice * Duration;
-
-                    item.From = cartItem.From;
-                    item.To = cartItem.To ;
-                    item.MachineId = cartItem.MachineId ;
-                    item.UserId = user.Id;
-                    item.Status = null;
-                    break;
-                }
-            }
-            
-            // New command
-            var newCommandId = db.Commands.Add(item).Id;
-            db.CartItems.Remove(itemSupr);
-
-            // Create bill
+            CartItem cartItem = db.CartItems.Find(cartId);
+            Machine machine = db.Machines.Find(cartItem.MachineId);
+            Command command = new Command();
             Bill bill = new Bill();
-            bill.UserId = user.Id;
-            bill.Value = (int)cost;
-            var newBillId = db.Bills.Add(bill).Id;
-
-            // Add commands to bill
             BillCommand billCommand = new BillCommand();
-            billCommand.BillId = newBillId;
-            billCommand.CommandId = newCommandId;
-            db.BillCommands.Add(billCommand);
 
-            // Save
-            db.SaveChanges();
-            return View("AddToCommands");
+            // validation of the disponibility
+            if (validate(machine, cartItem.From, cartItem.To))
+            {
+                long cost = 0;
+                long Duration = DateTimeHelper.DateTimeHelper.LongDiff(cartItem.From, cartItem.To).Days + 1; // Same date -> diff = 0
+                cost += machine.RentPrice * Duration;
+
+                command.From = cartItem.From;
+                command.To = cartItem.To;
+                command.MachineId = cartItem.MachineId;
+                command.UserId = user.Id;
+                command.Status = null;
+
+                // Create command and remove from cart
+                db.Commands.Add(command);
+                db.CartItems.Remove(cartItem);
+
+                // Create bill
+                bill.UserId = user.Id;
+                bill.Value = (int)cost;
+                db.Bills.Add(bill);
+
+                // Add commands to bill
+                billCommand.BillId = bill.Id;
+                billCommand.CommandId = command.Id;
+                db.BillCommands.Add(billCommand);
+
+                // Save
+                db.SaveChanges();
+                return View("AddToCommands");
+            }
+            else // return to index if not valid
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [Authorize]

@@ -2,7 +2,7 @@
 
 ## Instructions
 
-Vous allez reprendre votre travail au TP2 et développez l'applicationa avec une architecture MVC en utilisant les composants suivants :
+Vous allez reprendre votre travail au TP2 et développez l'application avec une architecture MVC en utilisant les composants suivants :
 
 1. Visual Studio 2017-2019
 2. MS SQL
@@ -21,5 +21,6 @@ Minimalement votre application devra avoir :
 
 # INFO
 
-Pour l'authentification : Dans Tools->NuGet Package Manager->Package Manager Console lancer la commande "Update-Database -Context ApplicationDbContext"
+Ne pas oublier de remplacer la connection par défault pour la vôtre dans Web.Config.
 
+Les mots de passes des utilisateurs sont tous "Qwerty1234!".
